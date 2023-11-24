@@ -437,7 +437,7 @@ class OneClickCombosPlugin : Plugin() {
                     repaired = false
                     return
                 }
-                if (config.stamina() != RunEnergy.NONE && attributes["stamina"] == 0 && getRunEnergy() <= 7000) {
+                {
                     state = States.NEED_STAMINA
                     return
                 }
