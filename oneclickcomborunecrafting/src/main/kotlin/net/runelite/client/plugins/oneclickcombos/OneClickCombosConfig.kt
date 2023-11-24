@@ -90,4 +90,15 @@ interface OneClickCombosConfig : Config {
     fun stamina(): RunEnergy {
         return RunEnergy.STAMINA_POTION
     }
+        @ConfigItem(
+        keyName = "grabStamina",
+        name = "Grab Stamina Potion",
+        description = "Whether to grab a stamina potion from the bank.",
+        position = 8,
+        title = "pouchConfig"
+    )
+    @JvmDefault
+    fun grabStamina(): Boolean {
+        return true
+    }
 }
