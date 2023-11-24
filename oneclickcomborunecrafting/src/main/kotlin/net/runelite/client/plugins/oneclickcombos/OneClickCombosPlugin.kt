@@ -138,6 +138,10 @@ class OneClickCombosPlugin : Plugin() {
                     event.consume()
                     return
                 }
+                if (state == States.OPEN_BANK && config.stamina().grabStamina && client.getBankItem(energyPot) != null) {
+                event.clickItem(client.getBankItem(energyPot)!!, 2, WidgetInfo.BANK_ITEM_CONTAINER.id)
+                return
+                }
                 process = false
                 val bank = client.findGameObject("Bank chest")
                 val ruin = client.findGameObject(config.rune().ruinsId)
