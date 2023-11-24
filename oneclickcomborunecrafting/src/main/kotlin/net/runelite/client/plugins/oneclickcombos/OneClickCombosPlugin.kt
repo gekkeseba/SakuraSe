@@ -2,6 +2,7 @@ package net.runelite.client
 
 import com.google.inject.Provides
 import net.runelite.api.*
+import net.unethicalite.api.movement.Movement
 import net.runelite.api.events.ChatMessage
 import net.runelite.api.events.MenuOptionClicked
 import net.runelite.api.widgets.WidgetInfo
@@ -436,7 +437,7 @@ class OneClickCombosPlugin : Plugin() {
                     repaired = false
                     return
                 }
-                if (config.stamina() != RunEnergy.NONE && attributes["stamina"] == 0 && client.getEnergy() <= 7000) {
+                if (config.stamina() != RunEnergy.NONE && attributes["stamina"] == 0 && getRunEnergy() <= 7000) {
                     state = States.NEED_STAMINA
                     return
                 }
