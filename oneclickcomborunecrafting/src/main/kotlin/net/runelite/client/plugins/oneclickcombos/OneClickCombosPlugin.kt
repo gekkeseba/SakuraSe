@@ -2,7 +2,6 @@ package net.runelite.client
 
 import com.google.inject.Provides
 import net.runelite.api.*
-import net.unethicalite.api.movement.Movement
 import net.runelite.api.events.ChatMessage
 import net.runelite.api.events.MenuOptionClicked
 import net.runelite.api.widgets.WidgetInfo
@@ -138,10 +137,6 @@ class OneClickCombosPlugin : Plugin() {
                     event.consume()
                     return
                 }
-                if (state == States.OPEN_BANK && config.stamina().grabStamina && client.getBankItem(energyPot) != null) {
-                event.clickItem(client.getBankItem(energyPot)!!, 2, WidgetInfo.BANK_ITEM_CONTAINER.id)
-                return
-                }
                 process = false
                 val bank = client.findGameObject("Bank chest")
                 val ruin = client.findGameObject(config.rune().ruinsId)
@@ -184,6 +179,7 @@ class OneClickCombosPlugin : Plugin() {
                     States.OPEN_BANK -> {
                         bank?.let {
                             event.use(it)
+                            state = States.NEED_STAMINA // Add this line to set the next state
                             return
                         }
                     }
@@ -441,7 +437,7 @@ class OneClickCombosPlugin : Plugin() {
                     repaired = false
                     return
                 }
-                {
+                if (config.stamina() != RunEnergy.NONE && attributes["stamina"] == 0 && client.energy <= 70) {
                     state = States.NEED_STAMINA
                     return
                 }
