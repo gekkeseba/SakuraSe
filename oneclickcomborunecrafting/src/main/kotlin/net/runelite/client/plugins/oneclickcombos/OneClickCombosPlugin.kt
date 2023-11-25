@@ -177,7 +177,7 @@ class OneClickCombosPlugin : Plugin() {
                         bank?.let {
                             event.use(it)  // Open the bank
                             // Directly try to withdraw a stamina potion
-                            client.getBankItem(ItemID.STAMINA_POTION1)?.let { potion ->
+                            client.getBankItem(ItemID.STAMINA_POTION1_23589)?.let { potion ->
                                 event.clickItem(potion, 2, WidgetInfo.BANK_ITEM_CONTAINER.id)
                             }
                             // Optionally, set the next state or perform additional actions after withdrawing
@@ -194,7 +194,7 @@ class OneClickCombosPlugin : Plugin() {
                     States.NEED_NECKLACE -> {
                         attributes["charges"] = -1
                         // Withdraw the binding necklace
-                        client.getBankItem(ItemID.STAMINA_POTION1)?.let { potion ->
+                        client.getBankItem(ItemID.STAMINA_POTION1_23589)?.let { potion ->
                             event.clickItem(potion, 2, WidgetInfo.BANK_ITEM_CONTAINER.id)
                         }
                         client.getBankItem(ItemID.BINDING_NECKLACE)?.let {
