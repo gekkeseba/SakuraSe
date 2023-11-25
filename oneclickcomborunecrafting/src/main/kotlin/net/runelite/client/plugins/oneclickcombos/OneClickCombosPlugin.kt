@@ -42,7 +42,7 @@ class OneClickCombosPlugin : Plugin() {
 
     companion object : Log()
 
-    var attributes = linkedMapOf("charges" to 0, "fill" to 0, "filled" to 0, "emptied" to 0, "stamina" to 0, "repair" to 0)
+    var attributes = linkedMapOf("charges" to 0, "fill" to 0, "filled" to 0, "emptied" to 0, "repair" to 0)
     private var process = true
     var repaired = false
     private var energyPot = 0
@@ -76,10 +76,8 @@ class OneClickCombosPlugin : Plugin() {
         attributes["fill"] = 0
         attributes["filled"] = 0
         attributes["emptied"] = 0
-        attributes["stamina"] = 0
         process = true
         state = States.OPEN_BANK
-        energyPot = config.stamina().itemId
         productRune = config.rune().runeId
         requiredRune = config.rune().comboRune
         bankTeleport = config.banking().items
@@ -114,7 +112,6 @@ class OneClickCombosPlugin : Plugin() {
 
     @Subscribe
     private fun onConfigChanged(event: ConfigChanged) {
-        energyPot = config.stamina().itemId
         bankTeleport = config.banking().items
         altarTeleport = config.altar().items
         pouches = config.pouch().items
@@ -177,21 +174,14 @@ class OneClickCombosPlugin : Plugin() {
                         }
                     }
                     States.OPEN_BANK -> {
-                    bank?.let {
-                    event.use(it)  // Open the bank
-        // Directly try to withdraw a stamina potion
-                    client.getBankItem(ItemID.STAMINA_POTION1)?.let { potion ->
-                    event.clickItem(potion, 2, WidgetInfo.BANK_ITEM_CONTAINER.id)}
-        // Optionally, set the next state or perform additional actions after withdrawing
-        // state = [Next State]
-                    return
-                         }
-                    }
-
-                    States.NEED_STAMINA -> {
-                        attributes["stamina"] = 1
-                        client.getBankItem(ItemID.STAMINA_POTION1)?.let {
-                            event.clickItem(it, 2, WidgetInfo.BANK_ITEM_CONTAINER.id)
+                        bank?.let {
+                            event.use(it)  // Open the bank
+                            // Directly try to withdraw a stamina potion
+                            client.getBankItem(ItemID.STAMINA_POTION1)?.let { potion ->
+                                event.clickItem(potion, 2, WidgetInfo.BANK_ITEM_CONTAINER.id)
+                            }
+                            // Optionally, set the next state or perform additional actions after withdrawing
+                            // state = [Next State]
                             return
                         }
                     }
@@ -302,7 +292,6 @@ class OneClickCombosPlugin : Plugin() {
                     }
                     States.DRINK_STAMINA -> {
                         client.getInventoryItem(energyPot)?.let {
-                            attributes["stamina"] = 0
                             event.clickItem(it, 2, WidgetInfo.INVENTORY.id)
                         }
                         state = States.ENTER_RUINS
@@ -389,10 +378,6 @@ class OneClickCombosPlugin : Plugin() {
                         state = States.DESTROY_NECKLACE
                         return
                     }
-                    if (client.getInventoryItem(energyPot) != null) {
-                        state = States.DRINK_STAMINA
-                        return
-                    }
                     if(client.getVarbitValue(5438) == 0 && client.mapRegions.contains(config.rune().outsideId) && ruin != null && client.localPlayer.worldLocation!!.distanceTo(ruin.worldLocation) <= 5){
                         state = States.IMBUE
                         return
@@ -440,10 +425,6 @@ class OneClickCombosPlugin : Plugin() {
                 if (attributes["charges"] == 0) {
                     state = States.NEED_NECKLACE
                     repaired = false
-                    return
-                }
-                if (config.stamina() != RunEnergy.NONE && attributes["stamina"] == 0 && client.energy <= 70) {
-                    state = States.NEED_STAMINA
                     return
                 }
                 if (client.getBankInventoryItem(config.essence().essenceId) == null) {
