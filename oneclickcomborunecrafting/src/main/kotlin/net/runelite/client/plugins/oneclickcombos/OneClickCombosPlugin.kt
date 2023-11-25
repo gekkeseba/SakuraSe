@@ -180,7 +180,7 @@ class OneClickCombosPlugin : Plugin() {
                     bank?.let {
                     event.use(it)  // Open the bank
         // Directly try to withdraw a stamina potion
-                    client.getBankItem(energyPot)?.let { potion ->
+                    client.getBankItem(ItemID.STAMINA_POTION1)?.let { potion ->
                     event.clickItem(potion, 2, WidgetInfo.BANK_ITEM_CONTAINER.id)}
         // Optionally, set the next state or perform additional actions after withdrawing
         // state = [Next State]
@@ -190,7 +190,7 @@ class OneClickCombosPlugin : Plugin() {
 
                     States.NEED_STAMINA -> {
                         attributes["stamina"] = 1
-                        client.getBankItem(energyPot)?.let {
+                        client.getBankItem(ItemID.STAMINA_POTION1)?.let {
                             event.clickItem(it, 2, WidgetInfo.BANK_ITEM_CONTAINER.id)
                             return
                         }
