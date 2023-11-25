@@ -16,6 +16,7 @@ import net.runelite.client.plugins.oneclickcombos.api.inventory.Inventory
 import net.runelite.client.plugins.oneclickcombos.client.*
 import net.runelite.client.plugins.oneclickcombos.util.*
 import net.runelite.client.plugins.zeahcrafter.OneClickCombosConfig
+import static net.unethicalite.api.movement.Movement.getRunEnergy
 import org.pf4j.Extension
 import javax.inject.Inject
 import kotlin.properties.Delegates
@@ -436,7 +437,7 @@ class OneClickCombosPlugin : Plugin() {
                     repaired = false
                     return
                 }
-                if (config.stamina() != RunEnergy.NONE && attributes["stamina"] == 0 && client.energy <= 7000) {
+                if (config.stamina() != RunEnergy.NONE && attributes["stamina"] == 0 && getRunEnergy() <= 70) {
                     state = States.NEED_STAMINA
                     return
                 }
