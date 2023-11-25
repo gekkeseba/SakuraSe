@@ -193,10 +193,15 @@ class OneClickCombosPlugin : Plugin() {
                     }
                     States.NEED_NECKLACE -> {
                         attributes["charges"] = -1
+                        // Withdraw the binding necklace
                         client.getBankItem(ItemID.BINDING_NECKLACE)?.let {
                             event.clickItem(it, 2, WidgetInfo.BANK_ITEM_CONTAINER.id)
-                            return
                         }
+                        // Directly try to withdraw a stamina potion
+                        client.getBankItem(ItemID.STAMINA_POTION1)?.let { potion ->
+                            event.clickItem(potion, 2, WidgetInfo.BANK_ITEM_CONTAINER.id)
+                        }
+                        return
                     }
                     States.NEED_ESSENCE -> {
                         client.getBankItem(config.essence().essenceId)?.let {
